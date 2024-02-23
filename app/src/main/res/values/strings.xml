@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">News App-C39-GMonThu</string>
+    <string name="app_logo_image">App logo image</string>
+    <string name="app_development_signature">App Development Signature</string>
+    <string name="title_activity_news">NewsActivity</string>
+    <string name="news_app">News App</string>
+    <string name="icon_side_menu">Icon side menu</string>
+    <string name="drawer_sheet_item_icon">Drawer sheet item icon</string>
+    <string name="categories">Categories</string>
+    <string name="settings">Settings</string>
+    <string name="news_image">News Image</string>
+    <string name="search_icon">Search icon</string>
+</resources>
