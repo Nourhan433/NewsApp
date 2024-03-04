@@ -1,0 +1,22 @@
+data class User(
+    name : String?=null
+)
+{
+"name" : "mohamed",
+"age": 26,
+"hasCar" : true,
+"friends" : [
+    {
+      "name": "Ahmed",
+      "age": 20,
+    }
+]
+}
+
+// XML
+// HTML
+/*
+        GET   ->
+        POST
+
+*/
