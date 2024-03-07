@@ -40,11 +40,11 @@ fun DrawerSheetItemTextWithIconPreview() {
 @Preview
 @Composable
 fun NewsDrawerSheetPreview() {
-    NewsDrawerSheet()
+    NewsDrawerSheet(onCategoriesClick = {}, onSettingsClick = {})
 }
 
 @Composable
-fun NewsDrawerSheet() {
+fun NewsDrawerSheet(onCategoriesClick: () -> Unit, onSettingsClick: () -> Unit) {
     ModalDrawerSheet(modifier = Modifier.fillMaxWidth(0.7F)) {
         Column(
             modifier = Modifier
@@ -75,14 +75,14 @@ fun NewsDrawerSheet() {
             textResId = R.string.categories,
             icon = R.drawable.ic_categories,
             onItemClick = {
-
+                onCategoriesClick()
             }
         )
         DrawerSheetItemTextWithIcon(
             textResId = R.string.settings,
             icon = R.drawable.ic_settings,
             onItemClick = {
-
+                onSettingsClick()
             }
         )
     }

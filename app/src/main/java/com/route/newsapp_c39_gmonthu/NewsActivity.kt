@@ -1,5 +1,6 @@
 package com.route.newsapp_c39_gmonthu
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,9 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.route.newsapp_c39_gmonthu.api.ApiManager
+import com.route.newsapp_c39_gmonthu.fragments.CategoriesFragment
+import com.route.newsapp_c39_gmonthu.fragments.NewsFragmentContent
 import com.route.newsapp_c39_gmonthu.model.ArticlesItem
 import com.route.newsapp_c39_gmonthu.model.ArticlesResponse
 import com.route.newsapp_c39_gmonthu.model.Constants
@@ -53,14 +63,25 @@ class NewsActivity : ComponentActivity() {
 }
 // 1- Refactoring
 // 2- APIs & Networking
+// Categories Fragment +Navigation Component +HTTP Logging Interceptor
 
+//Search + Settings + News Details Activity
+// Sun & Wed ->Categories Fragment +Navigation Component + Logging Interceptor
 @Composable
 fun NewsScreen() {
     // Coordinator Layout
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val navController = rememberNavController()
     ModalNavigationDrawer(drawerContent = {
-        NewsDrawerSheet()
+        NewsDrawerSheet(onSettingsClick = {}, onCategoriesClick = {
+            navController.popBackStack()
+            if (navController.currentDestination?.route != CategoriesFragmentScreen.ROUTE_NAME)
+                navController.navigate(CategoriesFragmentScreen.ROUTE_NAME)
+            scope.launch {
+                drawerState.close()
+            }
+        })
     }, drawerState = drawerState) {
         Scaffold(topBar = {
             NewsAppBar {
@@ -69,76 +90,35 @@ fun NewsScreen() {
                 }
             }
         }) { paddingValues ->
-            NewsFragmentContent(Modifier.padding(top = paddingValues.calculateTopPadding()))
+//            NewsFragmentContent(Modifier.padding(top = paddingValues.calculateTopPadding()))
+            NavHost(
+                navController = navController,
+                startDestination = CategoriesFragmentScreen.ROUTE_NAME,
+                modifier = Modifier.padding(top = paddingValues.calculateTopPadding())
+            ) {
+                composable(CategoriesFragmentScreen.ROUTE_NAME) {
+                    CategoriesFragment(navHostController = navController)
+                }
+                composable(
+                    "${NewsFragmentScreen.ROUTE_NAME}/{category_id}",
+                    arguments = listOf(navArgument("category_id") {
+                        type = NavType.StringType
+                    })
+                ) { navBackStackEntry ->
+                    val categoryId = navBackStackEntry.arguments?.getString("category_id")
+                    NewsFragmentContent(categoryId = categoryId ?: "")
+                }
+                composable(SettingsFragmentScreen.ROUTE_NAME) {
+                    // SettingsScreen as Composable
+
+
+                }
+            }
         }
     }
 
 }
 
-
-@Composable
-fun NewsFragmentContent(modifier: Modifier = Modifier) {
-    val newsStatesItems = remember {
-        mutableStateListOf<ArticlesItem>()
-    }
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .paint(
-                painter = painterResource(id = R.drawable.pattern),
-                contentScale = ContentScale.Crop
-            )
-    ) {//4-
-        NewsSourcesTabRow { sourceId ->
-
-            ApiManager.getNewsServices()
-                .getNewsBySource(Constants.API_KEY, sourceId)
-//                    .execute() // main Thread
-                .enqueue(object : Callback<ArticlesResponse> {
-                    override fun onResponse(
-                        call: Call<ArticlesResponse>,
-                        response: Response<ArticlesResponse>
-                    ) {
-                        newsStatesItems.clear()
-                        val newsList = response.body()?.articles
-                        if (newsList?.isNotEmpty() == true) {
-                            newsStatesItems.addAll(newsList)
-                        }
-                        // Documentation -> Thread -> Room
-                    }
-                    // Main Thread ->  handle button clicks => UserNavigation
-                    // Background Thread -> Networking -> Local Database  <-> Heavy loading task
-                    // Instagram -> APIs Sign up
-
-
-                    override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
-
-                    }
-
-                })
-
-        } //{ sourceId ->
-        // 1- Serialization -> Convert kotlin to json ,,,
-        //    Deserialization -> Convert json to kotlin
-        // 2-  interface callback ->
-        //     A) RecyclerView on Clicks ->
-        //     B) 2 Fragments -> interface callbacks -> To Do App (BottomSheet Fragment )
-        //                      Activity ->   taskListFragment=             TasksListFragment()
-        //                                   taskListFragment.getTodosFromDatabase()
-        //
-        NewsList(newsStatesItems.toList())
-    }
-}
-
-@Composable
-fun NewsList(list: List<ArticlesItem>) {
-    LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-        items(list.size) { position ->
-            NewsCard(list[position])
-        }
-    }
-}
 
 //@Preview
 //@Composable
@@ -146,11 +126,6 @@ fun NewsList(list: List<ArticlesItem>) {
 //    NewsList()
 //}
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun NewsFragmentContentPreview() {
-    NewsFragmentContent()
-}
 
 @Preview
 @Composable

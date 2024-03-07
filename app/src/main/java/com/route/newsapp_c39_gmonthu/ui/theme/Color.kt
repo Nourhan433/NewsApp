@@ -14,3 +14,5 @@ val white = Color.White
 val green = Color(0xFF39A552)
 val black = Color(0xFF303030)
 val gray = Color(0xFF79828B)
+
+val gray2 = Color(0xFF4F5A69)

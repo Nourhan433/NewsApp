@@ -32,6 +32,7 @@ interface OnNewsSourcesTabSelectedListener {
 
 @Composable
 fun NewsSourcesTabRow(
+    categoryId: String,
     onTabSelected: (sourceId: String) -> Unit,
 //    onNewsSourcesTabSelectedListener: OnNewsSourcesTabSelectedListener
 ) {
@@ -43,7 +44,7 @@ fun NewsSourcesTabRow(
     }
     LaunchedEffect(Unit) {
         ApiManager.getNewsServices()
-            .getNewsSources(Constants.API_KEY, "sports")
+            .getNewsSources(Constants.API_KEY, categoryId)
             .enqueue(object : Callback<SourcesResponse> {
                 override fun onResponse(
                     call: Call<SourcesResponse>,
