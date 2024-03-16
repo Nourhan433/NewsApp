@@ -2,6 +2,7 @@ package com.route.newsapp_c39_gmonthu.fragments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,9 +13,14 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,26 +39,50 @@ import com.route.newsapp_c39_gmonthu.R
 import com.route.newsapp_c39_gmonthu.model.Category
 import com.route.newsapp_c39_gmonthu.model.Constants
 import com.route.newsapp_c39_gmonthu.ui.theme.gray2
+import com.route.newsapp_c39_gmonthu.utils.NewsTopAppBar
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun CategoriesFragment(modifier: Modifier = Modifier, navHostController: NavHostController) {
-    Column(modifier = modifier.fillMaxSize()) {
-        Text(
-            text = "${stringResource(id = R.string.pick_your_category)}${stringResource(id = R.string.of_interest)} ",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = gray2,
+fun CategoriesFragment(modifier: Modifier = Modifier, navHostController: NavHostController,scope: CoroutineScope, drawerState: DrawerState ) {
+    val shouldDisplaySearchIcon by rememberSaveable {
+        mutableStateOf(false)
+    }
+    val shouldDisplayMenuIcon by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+
+
+    Scaffold(topBar = {
+        NewsTopAppBar(
+            shouldDisplaySearchIcon = shouldDisplaySearchIcon,
+            shouldDisplayMenuIcon = shouldDisplayMenuIcon,
+            titleResourceId = R.string.categories,
+            scope = scope,
+            drawerState = drawerState
         )
-        CategoriesGrid(navHostController = navHostController)
+    })
+    {paddingValues ->paddingValues
+
+
+        Column(modifier = modifier.fillMaxSize().padding(top = paddingValues.calculateTopPadding())) {
+            Text(
+                text = "${stringResource(id = R.string.pick_your_category)}${stringResource(id = R.string.of_interest)} ",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = gray2,
+            )
+            CategoriesGrid(navHostController = navHostController)
+        }
     }
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun CategoriesFragmentPreview() {
-    CategoriesFragment(navHostController = rememberNavController())
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun CategoriesFragmentPreview() {
+//    CategoriesFragment(navHostController = rememberNavController(),)
+//}
 
 @Composable
 fun CategoriesGrid(navHostController: NavHostController) {
@@ -73,8 +103,7 @@ fun CategoryCard(category: Category, position: Int, navHostController: NavHostCo
 
 // Handle it by ourselves
     // Navigation Component
-
-    Card(
+ Card(
         modifier = Modifier
             .padding(10.dp)
             .fillMaxWidth(),

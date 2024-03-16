@@ -68,6 +68,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     // Glide
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     // Navigation Component
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")

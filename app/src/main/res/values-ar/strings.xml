@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">News App-C39-GMonThu</string>
+    <string name="app_logo_image">App logo image</string>
+    <string name="app_development_signature">App Development Signature</string>
+    <string name="title_activity_news">NewsActivity</string>
+    <string name="news_app">News App</string>
+    <string name="icon_side_menu">Icon side menu</string>
+    <string name="drawer_sheet_item_icon">Drawer sheet item icon</string>
+    <string name="categories">Categories</string>
+    <string name="settings">الأعمال</string>
+    <string name="news_image">صوره الاخبار </string>
+    <string name="search_icon">ايقونه البحث </string>
+    <string name="pick_your_category">اختر التصنيف \n</string>
+    <string name="of_interest">الذي يعجبك</string>
+    <string name="category_image">صوره الصنف</string>
+    <string name="Details">تفاصيل</string>
+
+    <string name="sports">رياضه</string>
+    <string name="technology">تكنولوجيا</string>
+    <string name="health">صحه</string>
+    <string name="business">تجاره</string>
+    <string name="general">عام</string>
+    <string name="science">علوم</string>
+    <string name="viewFullArticle">المقال كامل</string>
+    <string name="search_article">بحث</string>
+    <string name="language">لغه</string>
+    <string name="close">قفل</string>
+    <string name="English">انجليزي</string>
+    <string name="Arabic">عربي</string>
+</resources>

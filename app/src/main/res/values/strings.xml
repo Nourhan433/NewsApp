@@ -15,9 +15,16 @@
     <string name="category_image">Category Image</string>
 
     <string name="sports">Sports</string>
+    <string name="Details">details</string>
     <string name="technology">Technology</string>
     <string name="health">Health</string>
     <string name="business">Business</string>
     <string name="general">General</string>
     <string name="science">Science</string>
+    <string name="viewFullArticle">ViewArticle</string>
+    <string name="search_article">Search_article</string>
+    <string name="language">Language</string>
+    <string name="close">close</string>
+    <string name="English">english</string>
+    <string name="Arabic">Arabic</string>
 </resources>

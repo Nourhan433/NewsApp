@@ -24,4 +24,6 @@ object ApiManager {
     fun getNewsServices(): NewsServices {
         return retrofit.create(NewsServices::class.java)
     }
+
+    val newsService = retrofit.create(NewsServices::class.java)
 }

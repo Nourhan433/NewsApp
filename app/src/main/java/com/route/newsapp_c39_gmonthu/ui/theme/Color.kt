@@ -16,3 +16,4 @@ val black = Color(0xFF303030)
 val gray = Color(0xFF79828B)
 
 val gray2 = Color(0xFF4F5A69)
+val transparent = Color(0)

@@ -1,6 +1,7 @@
 package com.route.newsapp_c39_gmonthu.utils
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,11 +30,15 @@ import com.route.newsapp_c39_gmonthu.ui.theme.gray
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun NewsCard(newsData: ArticlesItem) {
+fun NewsCard(newsData: ArticlesItem,onNewsClick:((String)->Unit)?=null) {
     Card(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.clickable {
+            if (onNewsClick != null) {
+                onNewsClick(newsData.title?:"")
+            }
+        }.padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-    ) {
+    ){
         GlideImage(                          //         URL = "https://www.google.com/image.png"
             model = newsData.urlToImage,
             contentDescription = stringResource(R.string.news_image),
